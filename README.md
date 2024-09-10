@@ -3,4 +3,4 @@ Startet mit:
 C - Change
 F - Fix
 
-Form: C/F <Message> <Vorgangsnummer>
+Form: C/F Message Vorgangsnummer
