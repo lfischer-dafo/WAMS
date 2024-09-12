@@ -1,0 +1,42 @@
+﻿@* https://github.com/dotnet/blazor-samples/blob/main/8.0/BlazorWebAssemblyStandaloneWithIdentity/BlazorWasmAuth/Components/Identity/Login.razor *@
+@page "/Login"
+
+<style>
+.form-signin {
+    width: 100%;
+    max-width: 550px;
+    padding: 15px;
+    margin: auto;
+}
+</style>
+
+<div class="text-center">
+    <main class="form-signin">
+        <img class="mb-4" src="https://getbootstrap.com/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Anmelden</h1>
+
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatingInput" @bind-value="username" placeholder="Vorname.Nachname.Klasse">
+            <label for="floatingInput">Benutzername:</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatingPassword" @bind-value="password" placeholder="Password">
+            <label for="floatingPassword">Password:</label>
+        </div>
+
+        <div class="mb-3">
+            <NavLink href="/"> Password vergessen?</NavLink>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" @onclick="OnClick_Login" >Anmelden</button>
+    </main>
+</div>
+
+@code {
+    string username = String.Empty;
+    string password = String.Empty;
+
+    async Task OnClick_Login()
+    {
+        
+    }
+}
