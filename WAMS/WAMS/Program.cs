@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using WAMS.Components;
+using WAMS.Components.Database;
 
 namespace WAMS
 {
@@ -11,6 +13,11 @@ namespace WAMS
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddDbContext<DataContext>(options =>
+            {
+                options.UseMySql(builder.Configuration.GetConnectionString("ConnectionString"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ConnectionString")));
+            });
 
             var app = builder.Build();
 
@@ -31,6 +38,21 @@ namespace WAMS
                 .AddInteractiveServerRenderMode();
 
             app.Run();
+        }
+        /*
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        => Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(
+                webBuilder => webBuilder.UseStartup<Startup>());*/
+    }
+
+    public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+            => services.AddDbContext<DataContext>();
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
         }
     }
 }
