@@ -1,6 +1,35 @@
 ﻿@page "/Home" 
 
+<main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
+	<div class="row">
+		<div class="col-md-4 text-center">
+			<button type="button" class="btn btn-primary" @onclick="OnClick_1OG">1. OG</button><br>
+			<button type="button" class="btn btn-primary" @onclick="OnClick_EG">EG</button><br>
+			<button type="button" class="btn btn-primary" @onclick="OnClick_Keller">Keller</button><br>
+
+			<button type="button" class="btn btn-primary">Custom grund</button>
+		</div>
+		<div class="col-md-8">
+			wer
+		</div>
+	</div>
+</main>
+
 
 @code {
 
+	private void OnClick_1OG()
+	{
+		Console.WriteLine("OnClick_1OG");
+	}
+
+	private void OnClick_EG()
+	{
+		Console.WriteLine("OnClick_EG");
+	}
+
+	private void OnClick_Keller()
+	{
+		Console.WriteLine("OnClick_Keller");
+	}
 }
