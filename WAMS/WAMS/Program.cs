@@ -14,11 +14,6 @@ namespace WAMS
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddDbContext<DataContext>(options =>
-            {
-                options.UseMySql(builder.Configuration.GetConnectionString("ConnectionString"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("ConnectionString")));
-            });
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -46,13 +41,4 @@ namespace WAMS
                 webBuilder => webBuilder.UseStartup<Startup>());*/
     }
 
-    public class Startup
-    {
-        public void ConfigureServices(IServiceCollection services)
-            => services.AddDbContext<DataContext>();
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-        }
-    }
 }
