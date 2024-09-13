@@ -1,0 +1,60 @@
+﻿@page "/test/skn"
+@page "/avatar"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.IO
+@inject IJSRuntime JS
+
+<h3>Avatar ändern</h3>
+
+<!-- Avatar Bild -->
+@if (!string.IsNullOrEmpty(avatarPreview)) {
+        <img src="@avatarPreview" alt="Avatar Preview" class="rounded-pill" style="width: 150px; height: 150px;" />
+} else {
+        <img src="default-avatar.png" alt="Default Avatar" class="rounded-pill" style="width: 150px; height: 150px;" />
+}
+
+<!-- Avatar ändern Link -->
+<a href="javascript:void(0);" @onclick="TriggerFileUpload">Avatar ändern</a>
+
+<!-- Verstecktes InputFile für Datei-Upload -->
+<InputFile @ref="fileInput" OnChange="HandleFileSelected"  />
+
+<!-- Fehleranzeige -->
+@if (!string.IsNullOrEmpty(errorMessage)) {
+        <p class="text-danger">@errorMessage</p>
+}
+
+@code {
+    private IBrowserFile? uploadedFile;
+    private InputFile fileInput; // ElementReference für das InputFile
+    private string? avatarPreview;
+    private string? errorMessage;
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        Console.WriteLine("test-1212");
+        
+        errorMessage = null; // Fehlernachricht zurücksetzen
+        uploadedFile = e.File;
+
+        // Überprüfe die Dateigröße (z.B. 2 MB Begrenzung)
+        if (uploadedFile.Size > 2 * 1024 * 1024) // 2 MB
+        {
+            errorMessage = "Die Datei darf nicht größer als 2 MB sein.";
+            return;
+        }
+
+        // Lese die Datei als Bild
+        var format = uploadedFile.ContentType; // Beispiel: Dateityp automatisch erkennen
+        var buffer = new byte[uploadedFile.Size];
+         uploadedFile.OpenReadStream().ReadAsync(buffer);
+
+        // Erstelle eine Base64 URL für die Vorschau
+        avatarPreview = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+    }
+
+    // Öffnet das versteckte Datei-Upload-Feld, wenn auf "Avatar ändern" geklickt wird
+    private async Task TriggerFileUpload()
+    {
+        await JS.InvokeVoidAsync("eval", "document.querySelector('input[type=file]').click();");
+    }
+}

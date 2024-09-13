@@ -1,4 +1,5 @@
-﻿@page "/Dashboard/Benutzer"
+﻿@using WAMS.Components.Pages.Modal
+@page "/Dashboard/Benutzer"
 
 <header class="navbar navbar-expand-sm bg-dark navbar-dark position-relative">
 	<div class="container-fluid">
@@ -16,7 +17,7 @@
 		<!-- Rechtes Bild -->
 		<div class="ms-auto dropdown dropstart">
 			<a id="profilDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG5hENE1xPdNubAgK8NqkYjyemrRzhI_yn7xIW--Qcczwvsb0-OCCNFLVP7g46JZSRSIU&usqp=CAU" alt="Avatar Logo" style="width:40px;" class="rounded-pill">
+				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG5hENE1xPdNubAgK8NqkYjyemrRzhI_yn7xIW--Qcczwvsb0-OCCNFLVP7g46JZSRSIU&usqp=CAU" alt="Avatar Logo" style="width:40px;height:40px;" class="rounded-pill">
 			</a>
 			<ul class="dropdown-menu" aria-labelledby="profilDropdown">
 				<li role="presentation"><a role="menuitem" tabindex="-1" data-bs-toggle="modal" data-bs-target="#modalProfil">Profil</a></li>
@@ -49,7 +50,7 @@
 
 
 					<li class="nav-item">
-						<a class="nav-link collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#menu_item1" href="#" aria-expanded="false">
+						<a class="nav-link collapsed dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#menu_item1" aria-expanded="true">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
 							Klassen
 						</a>
@@ -178,45 +179,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="modalProfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProfildropLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="modalProfildropLabel">Profil</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-4 align-content-center">
-						<a id="profilDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-							<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG5hENE1xPdNubAgK8NqkYjyemrRzhI_yn7xIW--Qcczwvsb0-OCCNFLVP7g46JZSRSIU&usqp=CAU" alt="Avatar Logo" style="width:100px;" class="rounded-pill">
-						</a>
-						<a>Avatar ändern</a>
-					</div>
-					<div class="col-md-8">
-						<h4>Password ändern</h4>
-						<div class="form-group">
-							<label for="exampleInputPassword1">Aktuelles Password</label>
-							<input type="password" class="form-control" id="profil_" placeholder="Password">
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1">Neues Password</label>
-							<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1">Neues Password wiederholen</label>
-							<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer justify-content-center">
-				<button type="button" class="btn btn-success" data-bs-dismiss="modal">Speichern</button>
-				<button type="button" class="btn btn-warning" data-bs-dismiss="modal">Abbrechen</button>
-			</div>
-		</div>
-	</div>
-</div>
+<Modal_Profil/>
 
 @code {
 

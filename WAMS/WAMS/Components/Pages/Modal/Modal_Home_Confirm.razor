@@ -1,0 +1,27 @@
+﻿<!-- Modal -->
+<div class="modal fade" id="modalHomeConfirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProfildropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalHomeConfirmdropLabel">Raum Betreten</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<a>text</a>
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-success" data-bs-dismiss="modal" @onclick="OnClickConfirm">Bestätigen</button>
+				<button type="button" class="btn btn-warning" data-bs-dismiss="modal" @* @onclick="OnClick_Cansel" *@>Abbrechen</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	private void OnClickConfirm()
+	{
+		Console.WriteLine("OnClickConfirm");
+	}
+}
