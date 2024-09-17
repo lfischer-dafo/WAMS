@@ -1,0 +1,67 @@
+﻿<!-- Modal -->
+<div class="modal fade" id="modalProfil" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalProfildropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modalProfildropLabel">Profil</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4 align-content-center">
+						<a id="profilDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+							<img src="@avatarURL" alt="Avatar Logo" style="width:100px;height:100px;" class="rounded-pill">
+						</a>
+						<a>Avatar ändern <InputFile OnChange="@SingleUpload"/></a>
+					</div>
+					<div class="col-md-8">
+						<h4>Password ändern</h4>
+						<div class="form-group">
+							<label for="profil_current_password">Aktuelles Password</label>
+							<input type="password" class="form-control" id="profil_current_password" @bind-value="Input_current_password" placeholder="Password">
+						</div>
+						<div class="form-group">
+							<label for="profil_new_password">Neues Password</label>
+							<input type="password" class="form-control" id="profil_new_password" @bind-value="Input_new_password" placeholder="Password">
+						</div>
+						<div class="form-group">
+							<label for="profil_repeat_new_password">Neues Password wiederholen</label>
+							<input type="password" class="form-control" id="profil_repeat_new_password" @bind-value="Input_repeat_new_password" placeholder="Password">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer justify-content-center">
+				<button type="button" class="btn btn-success" data-bs-dismiss="modal" @onclick="OnClick_Save">Speichern</button>
+				<button type="button" class="btn btn-warning" data-bs-dismiss="modal" @* @onclick="OnClick_Cansel" *@>Abbrechen</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+
+	private string avatarURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG5hENE1xPdNubAgK8NqkYjyemrRzhI_yn7xIW--Qcczwvsb0-OCCNFLVP7g46JZSRSIU&usqp=CAU";
+	private string Input_current_password = String.Empty;
+	private string Input_new_password = String.Empty;
+	private string Input_repeat_new_password = String.Empty;
+
+
+	private void OnClick_Save()
+	{
+
+	}
+
+	private async Task SingleUpload(InputFileChangeEventArgs e)
+	{
+		MemoryStream ms = new MemoryStream();
+		await e.File.OpenReadStream().CopyToAsync(ms);
+		var bytes = ms.ToArray();
+		//do something with bytes
+	}
+
+	// private void OnClick_Cansel()
+	// {
+
+	// }
+}

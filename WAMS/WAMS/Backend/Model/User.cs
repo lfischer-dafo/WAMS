@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WAMS.Backend.Model
+namespace WAMS.Components.Model
 {
     public class User
     {
