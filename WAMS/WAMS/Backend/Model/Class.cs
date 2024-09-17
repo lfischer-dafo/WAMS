@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WAMS.Components.Model
+namespace WAMS.Backend.Model
 {
     public class Class
     {
