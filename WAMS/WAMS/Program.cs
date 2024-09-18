@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using WAMS.Components.Model;
 using System;
+using WAMS.Backend.Constants;
 
 namespace WAMS
 {
@@ -19,21 +20,22 @@ namespace WAMS
          // Add services to the container.
          builder.Services.AddRazorComponents()
              .AddInteractiveServerComponents();
-
+         builder.Services.AddAuthorization(config =>
+         {
+            foreach(var userPolicy in UserPolicy.GetPolicies())
+            {
+               config.AddPolicy(userPolicy, cfg => cfg.RequireClaim(userPolicy, "true"));
+            }
+         });
+         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+         {
+            options.Cookie.Name = "auth_token";
+            options.LoginPath = "/login";
+            options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+         });
+         builder.Services.AddCascadingAuthenticationState();
          string? connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
          builder.Services.AddDbContextFactory<AppDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-         builder.Services.AddCascadingAuthenticationState();
-         //builder.Services.AddScoped<IdentityUserAccessor>();
-         builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAutheticationStateProvider>();
-         builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
-            options.SignIn.RequireConfirmedAccount = false;
-         }).AddDefaultTokenProviders();
-         builder.Services.AddAuthentication(options =>
-         {
-            options.DefaultScheme = IdentityConstants.ApplicationScheme;
-            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-         }).AddIdentityCookies();
-         builder.Services.AddCascadingAuthenticationState();
 
          var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WAMS.Backend.Model;
 using WAMS.Components.Model;
 
 namespace WAMS.Backend.Data
@@ -9,5 +10,6 @@ namespace WAMS.Backend.Data
 
       public DbSet<Class> Classes { get; set; }
       public DbSet<User> Users { get; set; }
+      public DbSet<UserPolicy> Policies { get; set; }
    }
 }

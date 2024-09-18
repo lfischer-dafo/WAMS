@@ -58,6 +58,28 @@ namespace WAMS.Migrations
                     b.ToTable("Day");
                 });
 
+            modelBuilder.Entity("WAMS.Backend.Model.UserPolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Policy")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Policies");
+                });
+
             modelBuilder.Entity("WAMS.Components.Model.Class", b =>
                 {
                     b.Property<int>("Id")

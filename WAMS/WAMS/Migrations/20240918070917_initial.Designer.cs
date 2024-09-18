@@ -12,8 +12,8 @@ using WAMS.Backend.Data;
 namespace WAMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240917114159_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240918070917_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,28 @@ namespace WAMS.Migrations
                     b.HasIndex("TimetableId");
 
                     b.ToTable("Day");
+                });
+
+            modelBuilder.Entity("WAMS.Backend.Model.UserPolicy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Policy")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Policies");
                 });
 
             modelBuilder.Entity("WAMS.Components.Model.Class", b =>
