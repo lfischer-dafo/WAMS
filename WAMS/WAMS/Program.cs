@@ -30,7 +30,7 @@ namespace WAMS
          builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
          {
             options.Cookie.Name = "auth_token";
-            options.LoginPath = "/login";
+            options.LoginPath = "/";
             options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
          });
          builder.Services.AddCascadingAuthenticationState();
