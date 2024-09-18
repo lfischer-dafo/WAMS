@@ -1,5 +1,5 @@
 ﻿@using WAMS.Components.Pages.Modal
-@page "/Dashboard/Klasse"
+@page "/Dashboard/Klasse/{class_id}"
 @rendermode InteractiveServer
 
 <header class="navbar navbar-expand-sm bg-dark navbar-dark position-relative">
@@ -55,9 +55,9 @@
 							Klassen
 						</a>
 						<ul id="menu_item1" class="submenu" data-bs-parent="#nav_accordion">
-							<li><a class="nav-link" href="#">Fia25</a></li>
-							<li><a class="nav-link" href="#">Fia24</a></li>
-							<li><a class="nav-link" href="#">Fia23</a></li>
+							<li><NavLink class="nav-link" href="/Dashboard/Klasse/1/">Fia25</NavLink></li>
+							<li><NavLink class="nav-link" href="/Dashboard/Klasse/2/">Fia24</NavLink></li>
+							<li><NavLink class="nav-link" href="/Dashboard/Klasse/3/">Fia23</NavLink></li>
 						</ul>
 					</li>
 
@@ -124,6 +124,9 @@
 <Modal_Profil/>
 
 @code {
+	[Parameter]
+	public string class_id { get; set; }
+
 	int selected_Week = 0;
 
 

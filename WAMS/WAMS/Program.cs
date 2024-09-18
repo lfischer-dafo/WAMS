@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using WAMS.Components;
-using WAMS.Components.Database;
 
 namespace WAMS
 {
@@ -13,8 +11,9 @@ namespace WAMS
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+			builder.Services.AddControllers(); // Register the controllers
 
-            var app = builder.Build();
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -32,7 +31,9 @@ namespace WAMS
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
 
-            app.Run();
+			app.MapControllers();  // Add this line to map API controllers
+
+			app.Run();
         }
         /*
         public static IHostBuilder CreateHostBuilder(string[] args)

@@ -1,4 +1,5 @@
 ﻿@using WAMS.Components.Pages.Modal
+@inject IJSRuntime JSRuntime
 @page "/Dashboard/Benutzer"
 
 <header class="navbar navbar-expand-sm bg-dark navbar-dark position-relative">
@@ -71,101 +72,44 @@
 
 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 			<div class="row">
-				<table id="example" class="display" style="width:100%">
+				<table id="DB_user_list" class="display" style="width:100%">
 					<thead>
 						<tr>
 							<th>Avatar</th>
-							<th>Nachname,Vorname</th>
+							<th>Nachname, Vorname</th>
 							<th>Benutzername</th>
 							<th>Klasse</th>
 							<th>Position</th>
 							<th>Password</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>IMG</td>
-							<td>Tiger Nixon</td>
-							<td>System Architect</td>
-							<td>Edinburgh</td>
-							<td>61</td>
-							<td>$320,800</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Cedric Kelly</td>
-							<td>Senior Javascript Developer</td>
-							<td>Edinburgh</td>
-							<td>22</td>
-							<td>$433,060</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Sonya Frost</td>
-							<td>Software Engineer</td>
-							<td>Edinburgh</td>
-							<td>23</td>
-							<td>$103,600</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Quinn Flynn</td>
-							<td>Support Lead</td>
-							<td>Edinburgh</td>
-							<td>22</td>
-							<td>$342,000</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Dai Rios</td>
-							<td>Personnel Lead</td>
-							<td>Edinburgh</td>
-							<td>35</td>
-							<td>$217,500</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Gavin Joyce</td>
-							<td>Developer</td>
-							<td>Edinburgh</td>
-							<td>42</td>
-							<td>$92,575</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Martena Mccray</td>
-							<td>Post-Sales support</td>
-							<td>Edinburgh</td>
-							<td>46</td>
-							<td>$324,050</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Jennifer Acosta</td>
-							<td>Junior Javascript Developer</td>
-							<td>Edinburgh</td>
-							<td>43</td>
-							<td>$75,650</td>
-						</tr>
-						<tr>
-							<td>IMG</td>
-							<td>Shad Decker</td>
-							<td>Regional Director</td>
-							<td>Edinburgh</td>
-							<td>51</td>
-							<td>$183,000</td>
-						</tr>
-					</tbody>
+@* @foreach (var user in users) {
+					<tr>
+						<td><img src="@user.Avatar" alt="Avatar" width="50" class="rounded-pill" /></td>
+						<td>@user.LastName, @user.FirstName</td>
+						<td>@user.UserName</td>
+						<td>@user.Class</td>
+						<td>@user.Position</td>
+						<td>@user.Password</td>
+						<td>
+							<button class="btn btn-primary" @onclick="() => OpenEditModal(user)">Edit</button>
+						</td>
+					</tr>
+} *@
+				</tbody>
 				</table>
 
 				<script>
-					window.addEventListener('load', (event) => {
-						$('#example').DataTable({
+					// window.addEventListener('load', (event) => {
+					// 	$('#DB_user_list').DataTable({
 
-						});
-					});
+					// 	});
+					// });
 
 				</script>
+
 
 			</div>
 		</main>
@@ -177,10 +121,85 @@
 
 
 
-
+<script src="datatable_allUser.js"></script>
 <!-- Modal -->
 <Modal_Profil/>
+<Modal_Profil_edit/>
 
 @code {
+	// Injection von JSRuntime für die Interaktion mit JavaScript
 
+	// protected override async Task OnAfterRenderAsync(bool firstRender)
+	// {
+	// 	if (firstRender)
+	// 	{
+	// 		Console.WriteLine("OnAfterRenderAsync called for the first render.");
+	// 		await JSRuntime.InvokeAsync<object>("initializeDataTable", "#DB_user_list");
+	// 	}
+	// }
+
+
+	// // Benutzerklasse
+	// public class User
+	// {
+	// 	public int Id { get; set; }
+	// 	public string Avatar { get; set; }
+	// 	public string FirstName { get; set; }
+	// 	public string LastName { get; set; }
+	// 	public string UserName { get; set; }
+	// 	public string Class { get; set; }
+	// 	public string Position { get; set; }
+	// 	public string Password { get; set; }
+	// }
+
+	// // Beispiel-Daten
+	// private List<User> users = new List<User>
+	// {
+	// 	new User { Id = 1, Avatar = "https://via.placeholder.com/50", FirstName = "Max", LastName = "Mustermann", UserName = "maxm", Class = "10A", Position = "Schüler", Password = "******" },
+	// 	new User { Id = 2, Avatar = "https://via.placeholder.com/50", FirstName = "Sara", LastName = "Musterfrau", UserName = "saram", Class = "11B", Position = "Lehrer", Password = "******" },
+	// 	new User { Id = 3, Avatar = "https://via.placeholder.com/50", FirstName = "John", LastName = "Doe", UserName = "johnd", Class = "12C", Position = "Schüler", Password = "******" }
+	// };
+
+	// // Der Benutzer, der zum Bearbeiten ausgewählt wurde
+	// private User selectedUser = new User();
+
+	// // Diese Methode wird aufgerufen, wenn der Edit-Button geklickt wird
+	// private void OpenEditModal(User user)
+	// {
+	// 	// Den ausgewählten Benutzer kopieren, um ihn im Modal zu bearbeiten
+	// 	selectedUser = new User {
+	// 			Id = user.Id,
+	// 			Avatar = user.Avatar,
+	// 			FirstName = user.FirstName,
+	// 			LastName = user.LastName,
+	// 			UserName = user.UserName,
+	// 			Class = user.Class,
+	// 			Position = user.Position,
+	// 			Password = user.Password
+	// 		};
+
+	// 	// Modal mit JavaScript öffnen
+	// 	JSRuntime.InvokeVoidAsync("$('#modalProfilEdit').modal', 'show'");
+
+	// }
+
+	// // Speichern der Änderungen
+	// private void SaveChanges()
+	// {
+	// 	// Suche den Benutzer in der Liste und aktualisiere seine Daten
+	// 	var user = users.FirstOrDefault(u => u.Id == selectedUser.Id);
+	// 	if (user != null) {
+	// 		user.Avatar = selectedUser.Avatar;
+	// 		user.FirstName = selectedUser.FirstName;
+	// 		user.LastName = selectedUser.LastName;
+	// 		user.UserName = selectedUser.UserName;
+	// 		user.Class = selectedUser.Class;
+	// 		user.Position = selectedUser.Position;
+	// 		user.Password = selectedUser.Password;
+	// 	}
+
+	// 	// Modal mit JavaScript schließen
+	// 	JSRuntime.InvokeVoidAsync("$('#editModal').modal', 'hide'");
+
+	// }
 }
