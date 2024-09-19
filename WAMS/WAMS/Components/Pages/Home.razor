@@ -1,5 +1,7 @@
 ﻿@using WAMS.Components.Pages.Modal
-@page "/Home" 
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@page "/home" 
 
 
 <header class="navbar navbar-expand-sm bg-dark navbar-dark position-relative">
@@ -17,7 +19,7 @@
 			</a>
 			<ul class="dropdown-menu" aria-labelledby="profilDropdown">
 				<li role="presentation"><a role="menuitem" tabindex="-1" data-bs-toggle="modal" data-bs-target="#modalProfil">Profil</a></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Abmelden</a></li>
+				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" @onclick="OnClick_Logout">Abmelden</a></li>
 			</ul>
 		</div>
 	</div>
@@ -49,8 +51,6 @@
 		Console.WriteLine("OnClick_2OG");
 	}
 
-
-
 	private void OnClick_1OG()
 	{
 		Console.WriteLine("OnClick_1OG");
@@ -64,5 +64,10 @@
 	private void OnClick_Keller()
 	{
 		Console.WriteLine("OnClick_Keller");
+	}
+
+	private void OnClick_Logout()
+	{
+		NavigationManager.NavigateTo("/logout");
 	}
 }
