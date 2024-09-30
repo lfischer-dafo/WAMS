@@ -394,15 +394,3 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
-# JetBrains Rider
-*.sln.iml
-/WAMS/WAMS/Backend/Model/Class.cs
-/WAMS/WAMS/Backend/Model/Course.cs
-/WAMS/WAMS/Backend/Model/Day.cs
-/WAMS/WAMS/Backend/Model/Room.cs
-/WAMS/WAMS/Backend/Model/Student.cs
-/WAMS/WAMS/Backend/Model/Teacher.cs
-/WAMS/WAMS/Backend/Model/Timetable.cs
-/WAMS/WAMS/Backend/Model/User.cs
-/WAMS/WAMS/Backend/Model/UserPolicy.cs
-/WAMS/WAMS/Backend/Model/ViewModels/LoginViewModel.cs
