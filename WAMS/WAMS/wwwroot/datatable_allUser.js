@@ -1,60 +1,95 @@
-if (typeof dataTable === 'undefined') {
-    console.log("datatable");
-
-    const dataTable = new DataTable("#DB_user_list", {
-        order: [[6, 'desc']],
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "/API/GetAllUser",
-            type: "GET",
-            datatype: 'json',
-            data: 'data.data'
-        },
+window.initializeDataTable2 = function () {
+    const dataTable = new DataTable("#DB_user_list2", {
         language: {
-            url: "/datatables/lang/German.json"
-        },
-        columnDefs: [
-            { targets: [0], visible: false },
-            { targets: [1], visible: true, className: "truncate", width: "30px" },
-            { targets: [2], visible: true, width: "10px" },
-            { targets: [3], visible: true, className: "truncate" },
-            { targets: [4], visible: true, className: "truncate_small" },
-            { targets: [5], visible: true, width: "10px" },
-            { targets: [6], visible: true, width: "10px" },
-            { targets: [7], visible: true, className: "truncate_small", width: "30px" },
-            { targets: [8], visible: true, className: "text-center", orderable: false, width: "80px" },
-            { targets: [9], visible: true, className: "text-center", orderable: false, width: "80px" }
-        ],
-        columns: [
-            { data: "ID" },
-            { data: "StructureAcronym" },
-            { data: "ItemNo" },
-            {
-                data: "Question",
-                render: function (data, type, full, meta) {
-                    return "<div class='tablecolum'>" + data + "</div>";
-                }
-            },
-            { data: "AnswerCount" },
-            { data: "UserName" },
-            { data: "Stamp" },
-            { data: "Validated" },
-            {
-                render: function (data, type, full, meta) {
-                    return '<a class="btn btn-info" href="../Admin/EditQuestion?ID=' + full.ID + '">Bearbeiten</a>';
-                }
-            },
-            {
-                render: function (data, type, full, meta) {
-                    return "<a href='?ID=" + full.ID + "&action2=delite' id='sa-warning' class='btn btn-danger'>L&ouml;schen</a>";
-                }
-            },
-        ],
-        createdRow: function (row) {
-            row.querySelectorAll(".truncate").forEach(function (element) {
-                element.setAttribute("title", element.innerText);
-            });
+            url: "/datatables/lang/Deutsch.json"
         }
     });
-}
+};
+window.initializeDataTable = function () {
+    if (typeof dataTable === 'undefined') {
+        console.log("Initializing DataTable");
+
+        const dataTable = new DataTable("#DB_user_list", {
+            order: [[0, 'asc']], // Sortiere nach ID
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "/API/GetAllUser", // API-Endpunkt für die Daten
+                type: "GET",
+                datatype: 'json',
+                dataSrc: function (json) {
+                    return json.data;
+                }
+            },
+            language: {
+                url: "/datatables/lang/Deutsch.json"
+            },
+            columnDefs: [
+                { targets: [0], visible: true, width: "50px" }, // ID
+                {
+                    targets: [1],
+                    visible: true,
+                    width: "100px",
+                    className: "text-center",
+                    render: function (data, type, full, meta) {
+                        return '<img src="/images/avatar-placeholder.png" class="avatar-img" alt="Avatar" width="50" height="50">';
+                    }
+                }, // Avatar als Platzhalter
+                {
+                    targets: [2],
+                    visible: true,
+                    className: "truncate",
+                    width: "200px",
+                    render: function (data, type, full, meta) {
+                        return full.LastName + ", " + full.FirstName; // Nachname, Vorname kombiniert
+                    }
+                }, // Nachname, Vorname (kombiniert)
+                { targets: [3], visible: true, width: "150px", data: "Username" }, // Benutzername
+                { targets: [4], visible: true, width: "100px", data: "Role" }, // Rolle
+                { targets: [5], visible: true, width: "100px", data: "Status" }, // Status
+                { targets: [6], visible: true, width: "150px", data: "LastLogin" }, // Letzter Login
+                {
+                    targets: [7],
+                    visible: true,
+                    className: "text-center",
+                    orderable: false,
+                    width: "160px",
+                    render: function (data, type, full) {
+                        return `
+                            <a class="btn btn-info" sendDataToBlazor('${full.ID}')>Bearbeiten</a>
+                            <a href="?ID=${full.ID}&action2=delete" id="sa-warning" class="btn btn-danger">Löschen</a>
+                        `;
+                    }
+                } // Action-Buttons (Bearbeiten und Löschen)
+            ],
+            columns: [
+                { data: "ID" }, // ID
+                { data: null }, // Avatar (Platzhalter)
+                {
+                    render: function (data, type, full) {
+                        return full.LastName + ", " + full.FirstName; // Nachname, Vorname
+                    }
+                }, // Nachname, Vorname
+                { data: "Username" }, // Benutzername
+                { data: "Role" }, // Rolle
+                { data: "Status" }, // Status
+                { data: "LastLogin" }, // Letzter Login
+                {
+                    render: function (data, type, full) {
+                        return `
+                            <a class="btn btn-info" onclick="sendDataToBlazor('${full.ID}')" >Bearbeiten</a>
+                            <a href="?ID=${full.ID}&action2=delete" id="sa-warning" class="btn btn-danger">Löschen</a>
+                        `;
+                    }
+                } // Action-Buttons (Bearbeiten und Löschen)
+            ],
+            createdRow: function (row) {
+                row.querySelectorAll(".truncate").forEach(function (element) {
+                    element.setAttribute("title", element.innerText); // Tooltip für abgeschnittene Inhalte
+                });
+            }
+        });
+    } else {
+        console.log("DataTable bereits initialisiert");
+    }
+};

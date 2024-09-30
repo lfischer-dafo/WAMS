@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NyrisBilderSucheNew.Utls
+namespace WAMS.Backend.Utls
 {
 
     /// <summary>
@@ -20,8 +20,6 @@ namespace NyrisBilderSucheNew.Utls
     internal class SqlHelper
     {
         private SqlConnection Connection;
-        //private readonly List<SqlQueryResult<object>> queryResults;
-
 
         public SqlHelper(string server, string database, string user, string password)
         {
@@ -107,9 +105,6 @@ namespace NyrisBilderSucheNew.Utls
 
             stopwatch.Stop();
             result.QueryExecutionTime = stopwatch.Elapsed.TotalMilliseconds;
-
-
-            //queryResults.Add(result); // Füge das SqlQueryResult<T>-Objekt zur Liste hinzu
 
             return result;
         }
@@ -223,16 +218,6 @@ namespace NyrisBilderSucheNew.Utls
             return result;
         }
 
-        //public void ClearResults()
-        //{
-        //    queryResults.Clear();
-        //}
-
-        //public List<SqlQueryResult<object>> GetResults()
-        //{
-        //    return queryResults;
-        //}
-
         public enum SqlCommandType
         {
             Select,
@@ -240,7 +225,6 @@ namespace NyrisBilderSucheNew.Utls
             Update,
             Delete
         }
-
 
         public class SqlQueryResult<T>
         {

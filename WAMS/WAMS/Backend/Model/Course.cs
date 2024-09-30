@@ -7,7 +7,7 @@ namespace WAMS.Components.Model
         [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
-        public Teacher? Teacher { get; set; }
+        public User? Teacher { get; set; }
         public Room? Room { get; set; }
         public Class? Class { get; set; }
     }

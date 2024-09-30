@@ -1,7 +1,12 @@
-﻿namespace WAMS.Components.Model
+﻿using System.ComponentModel.DataAnnotations;
+using WAMS.Backend.Model;
+
+namespace WAMS.Components.Model
 {
     public class Timetable
     {
-        public Course[,] Days { get; set; } = new Course[5,10];
+        [Key]
+        public int Id { get; set; }
+        public ICollection<Day>? Days { get; set; }
     }
 }

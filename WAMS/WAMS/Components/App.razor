@@ -8,15 +8,23 @@
    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
    <link rel="stylesheet" href="app.css" />
    <link rel="stylesheet" href="WAMS.styles.css" />
-   <script src="DataTables/datatables.min.css"></script>
+   <link rel="stylesheet" href="DataTables/datatables.min.css"/>
+    
    <link rel="icon" type="image/png" href="favicon.png" />
+
    <HeadOutlet />
 </head>
 
 <body>
     <Routes />
-
-
+    <script>
+        window.logToConsole = function (message) {
+            console.log(message);
+        }
+        window.sendDataToBlazor = function(id) {
+            DotNet.invokeMethodAsync('WAMS', 'ReceiveData', id);
+        };
+    </script>
     <script src="_framework/blazor.web.js"></script>
     <script src="JQuery/jquery-3.7.1.min.js"></script>
     <script src="bootstrap/bootstrap.min.js"></script>
@@ -24,22 +32,7 @@
     <script src="DataTables/datatables.min.js"></script>
     <script src="DataTables/pdfmake.min.js"></script>
     <script src="DataTables/vfs_fonts.js"></script>
-
-                        <script>
-                    function initializeDataTable(table) {
-                        $(document).ready(function () {
-                            $(table).DataTable();
-                        });
-                    }
-                </script>
-
-                <script>
-                    function DataTablesRemove(table) {
-                        $(document).ready(function () {
-                            $(table).DataTable().destroy();
-                        });
-                    }
-                </script>
+    <script src="datatable_allUser.js"></script> @* Wird nur für die Dashboard_User Seite verwendet. *@
 </body>
 
 </html>

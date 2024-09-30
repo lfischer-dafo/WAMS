@@ -1,6 +1,7 @@
 ﻿@using WAMS.Components.Pages.Modal
 @page "/Dashboard/Klasse/{class_id}"
 @rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
 
 <header class="navbar navbar-expand-sm bg-dark navbar-dark position-relative">
 	<div class="container-fluid">
@@ -30,7 +31,6 @@
 
 <div class="container-fluid">
 	<div class="row">
-
 		<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
 			<div class="position-sticky pt-3">
 				<ul class="nav flex-column">
@@ -42,7 +42,7 @@
 					</li>
 
 					<li class="nav-item">
-						<NavLink class="nav-link" href="#">
+                        <NavLink class="nav-link" href="/Dashboard/Benutzer">
 							<img width="24" height="24" src="images/svg/person-lines-fill.svg">
 							Benutzer-Liste
 						</NavLink>
@@ -65,11 +65,7 @@
 				</ul>
 			</div>
 		</nav>
-
-
-
-
-		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3">
 			<div class="row">
 				<div class="col-md-8 text-center">
 					<button type="button" class="btn btn-primary" @onclick="OnClick_lastWeek">
@@ -79,12 +75,228 @@
 					<button type="button" class="btn btn-primary" @onclick="OnClick_nextWeek">
 						<img src="images/svg/arrow-right.svg">
 					</button>
+                    <div class="pt-3 table-responsive">
 
-					<div style="">kalender</div>
+  <style>
+    /* CSS nur für die Tabelle mit der ID 'stundenplan' */
+    #stundenplan {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    #stundenplan th, #stundenplan td {
+      border: 1px solid #444;
+      text-align: center;
+      padding: 10px;
+    }
+    #stundenplan th {
+      background-color: #333;
+      color: white;
+    }
+    #stundenplan .zeit-slot {
+      width: 80px;
+    }
+    #stundenplan .block {
+      height: 100px;
+    }
+    /* Farbschemata für verschiedene Aktivitäten */
+    #stundenplan .aktivität-grün {
+      background-color: #98FB98;
+    }
+    #stundenplan .aktivität-rot {
+      background-color: #FF7F7F;
+    }
+    #stundenplan .aktivität-rosa {
+      background-color: #FFC0CB;
+    }
+    #stundenplan .aktivität-lila {
+      background-color: #DDA0DD;
+    }
+    #stundenplan .aktivität-blau {
+      background-color: #ADD8E6;
+    }
+    /* Mehrzeilige Zellen */
+    #stundenplan .rowspan-2 {
+      height: 200px;
+    }
+    /* Pausen mit unterschiedlichen Höhen */
+    #stundenplan .pause-klein {
+      height: 20px;
+    }
+    #stundenplan .pause-mittel {
+      height: 40px;
+    }
+    #stundenplan .pause-groß {
+      height: 60px;
+    }
+  </style>
+
+
+  <table id="stundenplan" class="table">
+    <tr>
+      <th class="zeit-slot">Uhrzeit</th>
+      <th>Montag (9)</th>
+      <th>Dienstag (10)</th>
+      <th>Mittwoch (11)</th>
+      <th>Donnerstag (12)</th>
+      <th>Freitag (13)</th>
+    </tr>
+
+    <!-- 1. Block: 8:00 - 9:30 -->
+    <tr>
+      <td rowspan="2">8:00 - 9:30</td>
+      <td rowspan="2" class="aktivität-grün"><strong>GESS/NN</strong></td>
+      <td class="aktivität-blau"><strong>H1AEMax</strong></td>
+      <td class="aktivität-blau"><strong>H1AEMax</strong></td>
+      <td class="aktivität-rot"><strong>POWI</strong></td>
+      <td class="aktivität-lila"><strong>LASS</strong></td>
+    </tr>
+    <tr>
+
+      <td>9:30</td>
+      <td>9:30</td>
+      <td>9:30</td>
+      <td>9:30</td>
+    </tr>
+
+    <!-- Pause 1 : 9:30 - 9:45  -->
+    <tr class="pause-klein">
+      <td colspan="6"></td> 
+    </tr>
+
+    <!-- 2. Block: 9:45 - 11:15 -->
+    <tr>
+      <td rowspan="2">9:45 - 11:15</td>
+      <td class="aktivität-blau"><strong>GESS/H1AEMax</strong></td>
+      <td class="aktivität-lila"><strong>HL2</strong></td>
+      <td class="aktivität-blau"><strong>H1AEMax</strong></td>
+      <td class="aktivität-rosa"><strong>12Fla</strong></td>
+      <td class="aktivität-lila"><strong>12Fla</strong></td>
+    </tr>
+    <tr>
+      <td>11:15</td>
+      <td>11:15</td>
+      <td>11:15</td>
+      <td>11:15</td>
+      <td>11:15</td>
+    </tr>
+     
+    <!-- Pause 2 : 11:15 - 11:30  -->
+    <tr class="pause-klein">
+      <td colspan="6"></td> 
+    </tr>
+
+    <!-- 3. Block: 11:30 - 13:00 -->
+    <tr>
+      <td rowspan="2">11:30 - 13:00</td>
+      <td class="aktivität-blau"><strong>LF10</strong></td>
+      <td class="aktivität-blau"><strong>H1AEMax</strong></td>
+      <td class="aktivität-lila"><strong>12Fla</strong></td>
+      <td class="aktivität-blau"><strong>LF12</strong></td>
+      <td class="aktivität-grün"><strong>Herr G.</strong></td>
+    </tr>
+    <tr>
+      <td>13:00</td>
+      <td>13:00</td>
+      <td>13:00</td>
+      <td>13:00</td>
+      <td>13:00</td>
+    </tr>
+
+    <!-- Pause 3 : 13:00 - 13:30  -->
+    <tr class="pause-mittel">
+      <td colspan="6"></td> 
+    </tr>
+
+    <!-- 4. Block: 13:30 - 15:00 -->
+    <tr>
+      <td rowspan="2">13:30 - 15:00</td>
+      <td class="aktivität-grün"><strong>SMT/GR</strong></td>
+      <td class="aktivität-lila"><strong>CISCO</strong></td>
+      <td class="aktivität-rot"><strong>BOLL</strong></td>
+      <td class="aktivität-rot"><strong>BOLL</strong></td>
+      <td class="aktivität-blau"><strong>12Fla</strong></td>
+    </tr>
+    <tr>
+      <td>15:00</td>
+      <td>15:00</td>
+      <td>15:00</td>
+      <td>15:00</td>
+      <td>15:00</td>
+    </tr>
+
+   <!-- Pause 4 : 15:00 - 15:15  -->
+    <tr class="pause-klein">
+      <td colspan="6"></td> 
+    </tr>
+
+    <!-- 5. Block: 15:15 - 16:45 -->
+    <tr>
+      <td rowspan="2">13:30 - 15:00</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+    <!-- Pause 5 : 17:30 - 19:00  -->
+    <tr class="pause-mittel">
+      <td colspan="6"></td> 
+    </tr>
+
+    <!-- 6. Block - Abendschule: 17:30 - 19:00 -->
+    <tr>
+      <td rowspan="2">17:30 - 19:00</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+
+    <!-- Pause 6 : 19:00 - 19:15  -->
+    <tr class="pause-klein">
+      <td colspan="6"></td> 
+    </tr>
+
+    <!-- 7. Block - Abendschule: 19:15 - 20:45 -->
+    <tr>
+      <td rowspan="2">19:15 - 20:45</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+
+
+					</div>
 
 				</div>
 				<div class="col-md-4">
-					<table id="example" class="display" style="width:100%">
+                    <table id="DB_user_list2" class="display" style="width:100%">
 						<thead>
 							<tr>
 								<th>Schüler</th>
@@ -99,15 +311,6 @@
 							</tr>
 						</tbody>
 					</table>
-
-					<script>
-						window.addEventListener('load', (event) => {
-							$('#example').DataTable({
-
-							});
-						});
-
-					</script>
 				</div>
 			</div>
 		</main>
@@ -126,7 +329,6 @@
 @code {
 	[Parameter]
 	public string class_id { get; set; }
-
 	int selected_Week = 0;
 
 
@@ -139,4 +341,13 @@
 	{
 		selected_Week--;
 	}
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) {
+            Console.WriteLine("OnAfterRenderAsync called for the first render.");
+            await JSRuntime.InvokeVoidAsync("logToConsole", "test");
+            await JSRuntime.InvokeVoidAsync("initializeDataTable2");
+        }
+    }
 }
