@@ -1,8 +1,20 @@
-﻿﻿@using WAMS.Components.Pages.Modal
+﻿@using WAMS.Backend.Constants
+﻿@using WAMS.Components.Pages.Modal
+@using WAMS.Backend.Model.ViewModels
+@using Microsoft.AspNetCore.Authentication
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
-@page "/home" 
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Policy = UserPolicy.USER)]
+@page "/" 
 
+<AuthorizeView>
+	<NotAuthorized>
+		<h6>NotAuthorized</h6>
+	</NotAuthorized>
+	<Authorized>
+		<h6>Authorized</h6>
+	</Authorized>
+</AuthorizeView>
 
 <header class="navbar navbar-expand-sm bg-dark navbar-dark position-relative">
 	<div class="container-fluid">
@@ -19,6 +31,16 @@
 			</a>
 			<ul class="dropdown-menu" aria-labelledby="profilDropdown">
 				<li role="presentation"><a role="menuitem" tabindex="-1" data-bs-toggle="modal" data-bs-target="#modalProfil">Profil</a></li>
+				<AuthorizeView Policy="@UserPolicy.TEACHER">
+					<Authorized>
+						<li role="presentation"><a role="menuitem" tabindex="-1" >Dashboard</a></li>
+					</Authorized>
+				</AuthorizeView>
+				<AuthorizeView Policy="@UserPolicy.ADMIN">
+					<Authorized>
+						<li role="presentation"><a role="menuitem" tabindex="-1">Dashboard</a></li>
+					</Authorized>
+				</AuthorizeView>
 				<li role="presentation"><a role="menuitem" tabindex="-1" href="#" @onclick="OnClick_Logout">Abmelden</a></li>
 			</ul>
 		</div>

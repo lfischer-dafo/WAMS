@@ -11,6 +11,6 @@ namespace WAMS.Backend.Data
 
       public DbSet<Class> Classes { get; set; }
       public DbSet<User> Users { get; set; }
-      public DbSet<Model.UserPolicy> Policies { get; set; }
+      public DbSet<Model.UserAccountPolicy> Policies { get; set; }
    }
 }

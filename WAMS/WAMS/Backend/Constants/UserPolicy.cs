@@ -2,13 +2,15 @@
 {
    public class UserPolicy
    {
-      public const string VIEW = "VIEW";
-      public const string EDIT = "EDIT";
-      public const string DELETE = "DELETE";
-
-      public static List<string> GetPolicies()
-      {
-         return new List<string> { VIEW, EDIT, DELETE };
-      }
-   }
+		public const string USER = "USER";
+		public const string TEACHER = "TEACHER";
+		public const string ADMIN = "ADMIN";
+		public static List<string> GetPolicies()
+		{
+			return new List<string>
+			{
+				USER, TEACHER, ADMIN
+			};
+		}
+	}
 }

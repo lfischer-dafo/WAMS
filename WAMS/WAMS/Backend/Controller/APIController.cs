@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text.Json;
 using WAMS.Backend.Utls;
@@ -14,7 +15,7 @@ namespace WAMS.Backend.Controller
         private static int counter = 1;
 
         [HttpGet]
-        [Route("GetAllUser")]
+		[Route("GetAllUser")]
         public ActionResult GetAllUser()
         {
             string search_value = HttpContext.Request.Query["search[value]"].ToString();
