@@ -29,11 +29,14 @@ namespace WAMS
 			builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 			{
 				options.Cookie.Name = "auth_token";
-				options.LoginPath = "/";
+				options.LoginPath = "/login";
+				options.AccessDeniedPath = "/login2";
 				options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
 			});
 
 			builder.Services.AddCascadingAuthenticationState();
+
+
 
 			builder.Services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
 
@@ -51,10 +54,11 @@ namespace WAMS
 				app.UseHsts();
 			}
 
+
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseAntiforgery();
-
+			app.UseStatusCodePagesWithRedirects("/404");
 			app.MapControllers();  // Add this line to map API controllers
 
 			app.MapRazorComponents<App>().AddInteractiveServerRenderMode();

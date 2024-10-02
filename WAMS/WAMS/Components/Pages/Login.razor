@@ -1,5 +1,5 @@
 ﻿﻿@* https://github.com/dotnet/blazor-samples/blob/main/8.0/BlazorWebAssemblyStandaloneWithIdentity/BlazorWasmAuth/Components/Identity/Login.razor *@
-@page "/"
+@page "/login"
 @using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
@@ -60,10 +60,10 @@
 
 	private string? ErrorMessage;
 
-	private async Task ButtonClick(MouseEventArgs args)
-	{
-		NavigationManager.NavigateTo("/logout");
-	}
+	// private void ButtonClick(MouseEventArgs args)
+	// {
+	// 	NavigationManager.NavigateTo("/logout");
+	// }
 
 	private async Task Authenticate()
 	{
@@ -97,7 +97,7 @@
 		var identity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
 		var principal = new ClaimsPrincipal(identity);
 		await HttpContext?.SignInAsync(principal);
-		NavigationManager.NavigateTo("/home");
+		NavigationManager.NavigateTo("/");
 	}
 
 	private string GenerateMD5Hash(string password)
