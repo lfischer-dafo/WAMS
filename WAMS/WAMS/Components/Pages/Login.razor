@@ -88,7 +88,7 @@
 			new Claim(ClaimTypes.Name, Model.UserName)
 		};
 
-		var accountPolicies = await context.Result.Policies.Where(x => x.UserId == userAccount.Id && x.IsEnabled).ToListAsync();
+		var accountPolicies = await context.Result.Policies.Where(x => x.UserId == userAccount.UserId && x.IsEnabled).ToListAsync();
 		foreach (var policy in accountPolicies)
 		{
 			Claims.Add(new Claim(policy.Policy, "true"));

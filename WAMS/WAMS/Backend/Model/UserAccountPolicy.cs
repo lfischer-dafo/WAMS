@@ -3,7 +3,7 @@ using WAMS.Components.Model;
 
 namespace WAMS.Backend.Model
 {
-    public class UserPolicy
+    public class UserAccountPolicy
     {
         [Key]
         public int UserPolicyId { get; set; }
