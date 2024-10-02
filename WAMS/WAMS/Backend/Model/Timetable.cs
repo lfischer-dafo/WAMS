@@ -1,12 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WAMS.Backend.Model;
+﻿using WAMS.Components.Model;
 
-namespace WAMS.Components.Model
+namespace WAMS.Backend.Model
 {
     public class Timetable
     {
-        [Key]
-        public int Id { get; set; }
-        public ICollection<Day>? Days { get; set; }
+        public int TimetableId { get; set; }
+
+        public ICollection<Week> Weeks { get; set; } = new List<Week>();
+
+        public Class Class { get; set; }
+
+        public int ClassId { get; set; }
     }
 }

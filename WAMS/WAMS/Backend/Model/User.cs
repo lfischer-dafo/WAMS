@@ -5,7 +5,7 @@ namespace WAMS.Components.Model
 	public class User
 	{
 		[Key]
-		public int Id { get; set; }
+		public int UserId { get; set; }
 		public string? Username { get; set; }
 		public string? Password { get; set; } //MD5
 		public string? Role { get; set; }
@@ -14,7 +14,9 @@ namespace WAMS.Components.Model
 		public DateTime? LastLogin { get; set; }
 		public Status Status { get; set; } = Status.Present;
 		public Room? BookedRoom { get; set; }
+		public int BookedRoomId { get; set; }
 		public Room? CurrentRoom { get; set; }
+		public int CurrentRoomId { get; set; }
 		public string? MailAdress { get; set; }
 		public ICollection<Class>? Classes { get; set; }
 		public bool IsAdmin { get; set; }
