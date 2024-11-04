@@ -16,19 +16,21 @@ namespace WAMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Policies",
+                name: "Classes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ClassId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Policy = table.Column<string>(type: "longtext", nullable: true)
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    IsEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    Year = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Policies", x => x.Id);
+                    table.PrimaryKey("PK_Classes", x => x.ClassId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -36,7 +38,7 @@ namespace WAMS.Migrations
                 name: "Room",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    RoomId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -44,7 +46,7 @@ namespace WAMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Room", x => x.Id);
+                    table.PrimaryKey("PK_Room", x => x.RoomId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -52,12 +54,19 @@ namespace WAMS.Migrations
                 name: "Timetable",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
+                    TimetableId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ClassId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Timetable", x => x.Id);
+                    table.PrimaryKey("PK_Timetable", x => x.TimetableId);
+                    table.ForeignKey(
+                        name: "FK_Timetable_Classes_ClassId",
+                        column: x => x.ClassId,
+                        principalTable: "Classes",
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -65,7 +74,7 @@ namespace WAMS.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Username = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -79,70 +88,41 @@ namespace WAMS.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     LastLogin = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    BookedRoomId = table.Column<int>(type: "int", nullable: true),
-                    CurrentRoomId = table.Column<int>(type: "int", nullable: true),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
                     MailAdress = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IsAdmin = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Users_Room_BookedRoomId",
-                        column: x => x.BookedRoomId,
+                        name: "FK_Users_Room_RoomId",
+                        column: x => x.RoomId,
                         principalTable: "Room",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Users_Room_CurrentRoomId",
-                        column: x => x.CurrentRoomId,
-                        principalTable: "Room",
-                        principalColumn: "Id");
+                        principalColumn: "RoomId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Classes",
+                name: "Week",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    WeekId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Year = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TimetableId = table.Column<int>(type: "int", nullable: true)
+                    CalendarWeek = table.Column<int>(type: "int", nullable: false),
+                    TimetableId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classes", x => x.Id);
+                    table.PrimaryKey("PK_Week", x => x.WeekId);
                     table.ForeignKey(
-                        name: "FK_Classes_Timetable_TimetableId",
+                        name: "FK_Week_Timetable_TimetableId",
                         column: x => x.TimetableId,
                         principalTable: "Timetable",
-                        principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Day",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TimetableId = table.Column<int>(type: "int", nullable: true),
-                    Weekday = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Day", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Day_Timetable_TimetableId",
-                        column: x => x.TimetableId,
-                        principalTable: "Timetable",
-                        principalColumn: "Id");
+                        principalColumn: "TimetableId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -150,23 +130,67 @@ namespace WAMS.Migrations
                 name: "ClassUser",
                 columns: table => new
                 {
-                    ClassesId = table.Column<int>(type: "int", nullable: false),
-                    StudentsId = table.Column<int>(type: "int", nullable: false)
+                    ClassesClassId = table.Column<int>(type: "int", nullable: false),
+                    StudentsUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassUser", x => new { x.ClassesId, x.StudentsId });
+                    table.PrimaryKey("PK_ClassUser", x => new { x.ClassesClassId, x.StudentsUserId });
                     table.ForeignKey(
-                        name: "FK_ClassUser_Classes_ClassesId",
-                        column: x => x.ClassesId,
+                        name: "FK_ClassUser_Classes_ClassesClassId",
+                        column: x => x.ClassesClassId,
                         principalTable: "Classes",
-                        principalColumn: "Id",
+                        principalColumn: "ClassId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassUser_Users_StudentsId",
-                        column: x => x.StudentsId,
+                        name: "FK_ClassUser_Users_StudentsUserId",
+                        column: x => x.StudentsUserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Policies",
+                columns: table => new
+                {
+                    UserPolicyId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Policy = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsEnabled = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Policies", x => x.UserPolicyId);
+                    table.ForeignKey(
+                        name: "FK_Policies_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Day",
+                columns: table => new
+                {
+                    DayId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    WeekId = table.Column<int>(type: "int", nullable: false),
+                    Weekday = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Day", x => x.DayId);
+                    table.ForeignKey(
+                        name: "FK_Day_Week_WeekId",
+                        column: x => x.WeekId,
+                        principalTable: "Week",
+                        principalColumn: "WeekId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -175,50 +199,48 @@ namespace WAMS.Migrations
                 name: "Course",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    TeacherId = table.Column<int>(type: "int", nullable: true),
-                    RoomId = table.Column<int>(type: "int", nullable: true),
-                    ClassId = table.Column<int>(type: "int", nullable: true),
+                    TeacherId = table.Column<int>(type: "int", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
+                    ClassId = table.Column<int>(type: "int", nullable: false),
                     DayId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.Id);
+                    table.PrimaryKey("PK_Course", x => x.CourseId);
                     table.ForeignKey(
                         name: "FK_Course_Classes_ClassId",
                         column: x => x.ClassId,
                         principalTable: "Classes",
-                        principalColumn: "Id");
+                        principalColumn: "ClassId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Course_Day_DayId",
                         column: x => x.DayId,
                         principalTable: "Day",
-                        principalColumn: "Id");
+                        principalColumn: "DayId");
                     table.ForeignKey(
                         name: "FK_Course_Room_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Room",
-                        principalColumn: "Id");
+                        principalColumn: "RoomId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Course_Users_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Classes_TimetableId",
-                table: "Classes",
-                column: "TimetableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClassUser_StudentsId",
+                name: "IX_ClassUser_StudentsUserId",
                 table: "ClassUser",
-                column: "StudentsId");
+                column: "StudentsUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Course_ClassId",
@@ -241,19 +263,30 @@ namespace WAMS.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Day_TimetableId",
+                name: "IX_Day_WeekId",
                 table: "Day",
+                column: "WeekId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Policies_UserId",
+                table: "Policies",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Timetable_ClassId",
+                table: "Timetable",
+                column: "ClassId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoomId",
+                table: "Users",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Week_TimetableId",
+                table: "Week",
                 column: "TimetableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_BookedRoomId",
-                table: "Users",
-                column: "BookedRoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CurrentRoomId",
-                table: "Users",
-                column: "CurrentRoomId");
         }
 
         /// <inheritdoc />
@@ -269,19 +302,22 @@ namespace WAMS.Migrations
                 name: "Policies");
 
             migrationBuilder.DropTable(
-                name: "Classes");
-
-            migrationBuilder.DropTable(
                 name: "Day");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Timetable");
+                name: "Week");
 
             migrationBuilder.DropTable(
                 name: "Room");
+
+            migrationBuilder.DropTable(
+                name: "Timetable");
+
+            migrationBuilder.DropTable(
+                name: "Classes");
         }
     }
 }

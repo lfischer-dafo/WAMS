@@ -8,7 +8,7 @@ namespace WAMS.Backend.Model
 
         public ICollection<Week> Weeks { get; set; } = new List<Week>();
 
-        public Class Class { get; set; }
+        public Class? Class { get; set; }
 
         public int ClassId { get; set; }
     }

@@ -24,47 +24,66 @@ namespace WAMS.Migrations
 
             modelBuilder.Entity("ClassUser", b =>
                 {
-                    b.Property<int>("ClassesId")
+                    b.Property<int>("ClassesClassId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentsId")
+                    b.Property<int>("StudentsUserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ClassesId", "StudentsId");
+                    b.HasKey("ClassesClassId", "StudentsUserId");
 
-                    b.HasIndex("StudentsId");
+                    b.HasIndex("StudentsUserId");
 
                     b.ToTable("ClassUser");
                 });
 
             modelBuilder.Entity("WAMS.Backend.Model.Day", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DayId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("DayId"));
 
-                    b.Property<int?>("TimetableId")
+                    b.Property<int>("WeekId")
                         .HasColumnType("int");
 
                     b.Property<int>("Weekday")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("DayId");
 
-                    b.HasIndex("TimetableId");
+                    b.HasIndex("WeekId");
 
                     b.ToTable("Day");
                 });
 
-            modelBuilder.Entity("WAMS.Backend.Model.UserPolicy", b =>
+            modelBuilder.Entity("WAMS.Backend.Model.Timetable", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("TimetableId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("TimetableId"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TimetableId");
+
+                    b.HasIndex("ClassId")
+                        .IsUnique();
+
+                    b.ToTable("Timetable");
+                });
+
+            modelBuilder.Entity("WAMS.Backend.Model.UserAccountPolicy", b =>
+                {
+                    b.Property<int>("UserPolicyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserPolicyId"));
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("tinyint(1)");
@@ -75,18 +94,20 @@ namespace WAMS.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserPolicyId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Policies");
                 });
 
             modelBuilder.Entity("WAMS.Components.Model.Class", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ClassId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ClassId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -94,28 +115,23 @@ namespace WAMS.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("TimetableId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Year")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("TimetableId");
+                    b.HasKey("ClassId");
 
                     b.ToTable("Classes");
                 });
 
             modelBuilder.Entity("WAMS.Components.Model.Course", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CourseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CourseId"));
 
-                    b.Property<int?>("ClassId")
+                    b.Property<int>("ClassId")
                         .HasColumnType("int");
 
                     b.Property<int?>("DayId")
@@ -124,13 +140,13 @@ namespace WAMS.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TeacherId")
+                    b.Property<int>("TeacherId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CourseId");
 
                     b.HasIndex("ClassId");
 
@@ -145,11 +161,11 @@ namespace WAMS.Migrations
 
             modelBuilder.Entity("WAMS.Components.Model.Room", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RoomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RoomId"));
 
                     b.Property<int>("Floor")
                         .HasColumnType("int");
@@ -157,37 +173,18 @@ namespace WAMS.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("RoomId");
 
                     b.ToTable("Room");
                 });
 
-            modelBuilder.Entity("WAMS.Components.Model.Timetable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Timetable");
-                });
-
             modelBuilder.Entity("WAMS.Components.Model.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BookedRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CurrentRoomId")
-                        .HasColumnType("int");
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext");
@@ -210,71 +207,114 @@ namespace WAMS.Migrations
                     b.Property<string>("Role")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
-                    b.HasIndex("BookedRoomId");
-
-                    b.HasIndex("CurrentRoomId");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("WAMS.Components.Model.Week", b =>
+                {
+                    b.Property<int>("WeekId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("WeekId"));
+
+                    b.Property<int>("CalendarWeek")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimetableId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WeekId");
+
+                    b.HasIndex("TimetableId");
+
+                    b.ToTable("Week");
                 });
 
             modelBuilder.Entity("ClassUser", b =>
                 {
                     b.HasOne("WAMS.Components.Model.Class", null)
                         .WithMany()
-                        .HasForeignKey("ClassesId")
+                        .HasForeignKey("ClassesClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WAMS.Components.Model.User", null)
                         .WithMany()
-                        .HasForeignKey("StudentsId")
+                        .HasForeignKey("StudentsUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("WAMS.Backend.Model.Day", b =>
                 {
-                    b.HasOne("WAMS.Components.Model.Timetable", "Timetable")
+                    b.HasOne("WAMS.Components.Model.Week", "Week")
                         .WithMany("Days")
-                        .HasForeignKey("TimetableId");
+                        .HasForeignKey("WeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Timetable");
+                    b.Navigation("Week");
                 });
 
-            modelBuilder.Entity("WAMS.Components.Model.Class", b =>
+            modelBuilder.Entity("WAMS.Backend.Model.Timetable", b =>
                 {
-                    b.HasOne("WAMS.Components.Model.Timetable", "Timetable")
-                        .WithMany()
-                        .HasForeignKey("TimetableId");
+                    b.HasOne("WAMS.Components.Model.Class", "Class")
+                        .WithOne("Timetable")
+                        .HasForeignKey("WAMS.Backend.Model.Timetable", "ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Timetable");
+                    b.Navigation("Class");
+                });
+
+            modelBuilder.Entity("WAMS.Backend.Model.UserAccountPolicy", b =>
+                {
+                    b.HasOne("WAMS.Components.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAMS.Components.Model.Course", b =>
                 {
                     b.HasOne("WAMS.Components.Model.Class", "Class")
                         .WithMany()
-                        .HasForeignKey("ClassId");
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WAMS.Backend.Model.Day", null)
                         .WithMany("Courses")
                         .HasForeignKey("DayId");
 
                     b.HasOne("WAMS.Components.Model.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId");
+                        .WithMany("Courses")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WAMS.Components.Model.User", "Teacher")
                         .WithMany()
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Class");
 
@@ -285,17 +325,24 @@ namespace WAMS.Migrations
 
             modelBuilder.Entity("WAMS.Components.Model.User", b =>
                 {
-                    b.HasOne("WAMS.Components.Model.Room", "BookedRoom")
-                        .WithMany()
-                        .HasForeignKey("BookedRoomId");
+                    b.HasOne("WAMS.Components.Model.Room", "Room")
+                        .WithMany("Users")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("WAMS.Components.Model.Room", "CurrentRoom")
-                        .WithMany()
-                        .HasForeignKey("CurrentRoomId");
+                    b.Navigation("Room");
+                });
 
-                    b.Navigation("BookedRoom");
+            modelBuilder.Entity("WAMS.Components.Model.Week", b =>
+                {
+                    b.HasOne("WAMS.Backend.Model.Timetable", "Timetable")
+                        .WithMany("Weeks")
+                        .HasForeignKey("TimetableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CurrentRoom");
+                    b.Navigation("Timetable");
                 });
 
             modelBuilder.Entity("WAMS.Backend.Model.Day", b =>
@@ -303,7 +350,24 @@ namespace WAMS.Migrations
                     b.Navigation("Courses");
                 });
 
-            modelBuilder.Entity("WAMS.Components.Model.Timetable", b =>
+            modelBuilder.Entity("WAMS.Backend.Model.Timetable", b =>
+                {
+                    b.Navigation("Weeks");
+                });
+
+            modelBuilder.Entity("WAMS.Components.Model.Class", b =>
+                {
+                    b.Navigation("Timetable");
+                });
+
+            modelBuilder.Entity("WAMS.Components.Model.Room", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("WAMS.Components.Model.Week", b =>
                 {
                     b.Navigation("Days");
                 });
