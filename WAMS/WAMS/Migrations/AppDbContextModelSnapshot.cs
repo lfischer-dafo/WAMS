@@ -137,11 +137,17 @@ namespace WAMS.Migrations
                     b.Property<int?>("DayId")
                         .HasColumnType("int");
 
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time(6)");
+
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");

@@ -12,7 +12,7 @@ using WAMS.Backend.Data;
 namespace WAMS.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241104084439_initial")]
+    [Migration("20241105072507_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -140,11 +140,17 @@ namespace WAMS.Migrations
                     b.Property<int?>("DayId")
                         .HasColumnType("int");
 
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time(6)");
+
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time(6)");
 
                     b.Property<int>("TeacherId")
                         .HasColumnType("int");

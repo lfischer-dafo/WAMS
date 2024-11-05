@@ -203,6 +203,8 @@ namespace WAMS.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    StartTime = table.Column<TimeOnly>(type: "time(6)", nullable: false),
+                    EndTime = table.Column<TimeOnly>(type: "time(6)", nullable: false),
                     TeacherId = table.Column<int>(type: "int", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false),
