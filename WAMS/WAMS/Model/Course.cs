@@ -9,7 +9,7 @@ namespace WAMS.Components.Model
       public string? Name { get; set; }
       public TimeOnly StartTime { get; set; }
       public TimeOnly EndTime { get; set; }
-      public User? Teacher { get; set; }
+      public Student? Teacher { get; set; }
       public int TeacherId { get; set; }
       public Room? Room { get; set; }
       public int RoomId { get; set; }

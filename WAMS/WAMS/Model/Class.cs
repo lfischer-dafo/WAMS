@@ -10,7 +10,7 @@ namespace WAMS.Components.Model
         public string? Name { get; set; }
         public string? Year { get; set; }
         public string? Description { get; set; }
-        public ICollection<User>? Students { get; set; }
+        public ICollection<Student>? Students { get; set; }
         public Timetable? Timetable { get; set; }
     }
 }

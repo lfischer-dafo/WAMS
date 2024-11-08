@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Components.Authorization;
 using WAMS.Components.Model;
 using System;
 using WAMS.Backend.Constants;
+using WAMSDataImport.StudentData;
 
 namespace WAMS
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -61,9 +62,10 @@ namespace WAMS
 			app.UseStatusCodePagesWithRedirects("/404");
 			app.MapControllers();  // Add this line to map API controllers
 
-			app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
-			app.Run();
-		}
 
-	}
+         app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+			app.Run();
+
+		}
+   }
 }

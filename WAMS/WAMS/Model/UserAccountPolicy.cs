@@ -8,7 +8,7 @@ namespace WAMS.Backend.Model
         [Key]
         public int UserPolicyId { get; set; }
 
-        public User User { get; set; }
+        public Student User { get; set; }
         public int UserId { get; set; }
 
         public string? Policy { get; set; }

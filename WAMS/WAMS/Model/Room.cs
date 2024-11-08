@@ -9,8 +9,6 @@ namespace WAMS.Components.Model
         public string? Name { get; set; }
         public int Floor { get; set; }
         public ICollection<Course>? Courses { get; set; }
-        public ICollection<User>? Users { get; set; }
-
-
+        public ICollection<Student>? Users { get; set; }
     }
 }

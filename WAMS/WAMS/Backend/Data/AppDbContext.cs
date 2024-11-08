@@ -10,7 +10,7 @@ namespace WAMS.Backend.Data
       public AppDbContext(DbContextOptions options) : base(options) {}
 
       public DbSet<Class> Classes { get; set; }
-      public DbSet<User> Users { get; set; }
+      public DbSet<Student> Users { get; set; }
       public DbSet<UserAccountPolicy> Policies { get; set; }
    }
 }

@@ -11,8 +11,8 @@ using WAMS.Backend.Data;
 
 namespace WAMS.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    [Migration("20241105072507_initial")]
+    [DbContext(typeof(ImportDbContext))]
+    [Migration("20241107103201_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -210,11 +210,8 @@ namespace WAMS.Migrations
                     b.Property<string>("MailAdress")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("longtext");
+                    b.Property<byte[]>("Password")
+                        .HasColumnType("longblob");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");

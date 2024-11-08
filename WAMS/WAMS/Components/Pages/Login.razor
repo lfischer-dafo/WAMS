@@ -14,104 +14,105 @@
 @inject NavigationManager NavigationManager
 
 <style>
-	.form-signin {
-		width: 100%;
-		max-width: 550px;
-		padding: 15px;
-		margin: auto;
-	}
+   .form-signin {
+      width: 100%;
+      max-width: 550px;
+      padding: 15px;
+      margin: auto;
+   }
 </style>
 
 <div class="text-center">
-	<main class="form-signin">
-		<img class="mb-4" src="https://getbootstrap.com/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
-		<h1 class="h3 mb-3 fw-normal">Anmelden</h1>
-		<EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="Login">
-			<DataAnnotationsValidator />
-			<div class="form-floating mb-3">
-				<InputText typeof="text" class="form-control" @bind-Value="Model.UserName" placeholder="Vorname.Nachname.Klasse" />
-				<ValidationMessage For="@(() => Model.UserName)" />
-				<label for="floatingInput">Benutzername:</label>
-			</div>
-			<div class="form-floating mb-3">
-				<InputText type="password" class="form-control" @bind-Value="Model.Password" placeholder="Password" />
-				<ValidationMessage For="@(() => Model.Password)" />
-				<label for="floatingPassword">Password:</label>
-			</div>
-			<div class="mb-3 text-center" style="height: 20px">
-				<span class="text-danger">@ErrorMessage </span>
-			</div>
-			<div class="mb-3">
-				<NavLink href="/"> Password vergessen?</NavLink>
-			</div>
-			<button class="w-100 btn btn-lg btn-primary" type="submit">Anmelden</button>
+   <main class="form-signin">
+      <img class="mb-4" src="https://getbootstrap.com/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+      <h1 class="h3 mb-3 fw-normal">Anmelden</h1>
+      <EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="Login">
+         <DataAnnotationsValidator />
+         <div class="form-floating mb-3">
+            <InputText typeof="text" class="form-control" @bind-Value="Model.UserName" placeholder="Vorname.Nachname.Klasse" />
+            <ValidationMessage For="@(() => Model.UserName)" />
+            <label for="floatingInput">Benutzername:</label>
+         </div>
+         <div class="form-floating mb-3">
+            <InputText type="password" class="form-control" @bind-Value="Model.Password" placeholder="Password" />
+            <ValidationMessage For="@(() => Model.Password)" />
+            <label for="floatingPassword">Password:</label>
+         </div>
+         <div class="mb-3 text-center" style="height: 20px">
+            <span class="text-danger">@ErrorMessage </span>
+         </div>
+         <div class="mb-3">
+            <NavLink href="/"> Password vergessen?</NavLink>
+         </div>
+         <button class="w-100 btn btn-lg btn-primary" type="submit">Anmelden</button>
 
-		</EditForm>
-	</main>
+      </EditForm>
+   </main>
 </div>
 
 @code {
 
-	[CascadingParameter]
-	public HttpContext? HttpContext { get; set; } = default!;
+   [CascadingParameter]
+   public HttpContext? HttpContext { get; set; } = default!;
 
-	[SupplyParameterFromForm]
-	public LoginViewModel Model { get; set; } = new();
+   [SupplyParameterFromForm]
+   public LoginViewModel Model { get; set; } = new();
 
-	private string? ErrorMessage;
+   private string? ErrorMessage;
 
-	// private void ButtonClick(MouseEventArgs args)
-	// {
-	// 	NavigationManager.NavigateTo("/logout");
-	// }
+   // private void ButtonClick(MouseEventArgs args)
+   // {
+   // 	NavigationManager.NavigateTo("/logout");
+   // }
 
-	private async Task Authenticate()
-	{
-		if (string.IsNullOrWhiteSpace(Model.UserName) || string.IsNullOrWhiteSpace(Model.Password))
-		{
-			ErrorMessage = "Bitte geben Sie Username und Passwort an.";
-			return;
-		}
+   private async Task Authenticate()
+   {
+      if (string.IsNullOrWhiteSpace(Model.UserName) || string.IsNullOrWhiteSpace(Model.Password))
+      {
+         ErrorMessage = "Bitte geben Sie Username und Passwort an.";
+         return;
+      }
 
-		Console.WriteLine(GenerateMD5Hash(Model.Password));
+      Console.WriteLine(GenerateMD5Hash(Model.Password));
 
-		using var context = AppDbContextFactory.CreateDbContextAsync();
-		var userAccount = context.Result.Users.Where(x => x.Username == Model.UserName).FirstOrDefault();
-		if (userAccount is null || userAccount.Password != GenerateMD5Hash(Model.Password))
-		{
-			ErrorMessage = "Username oder Passwort sind falsch";
-			return;
-		}
+      using var context = AppDbContextFactory.CreateDbContextAsync();
+      var userAccount = context.Result.Users.Where(x => x.Username == Model.UserName).FirstOrDefault();
+      SHA256 SHA256 = SHA256.Create();
+      if (userAccount is null || userAccount.Password != SHA256.ComputeHash(Encoding.ASCII.GetBytes(Model.Password)))
+      {
+         ErrorMessage = "Username oder Passwort sind falsch";
+         return;
+      }
 
-		var Claims = new List<Claim>
-		{
-			new Claim(ClaimTypes.Name, Model.UserName)
-		};
+      var Claims = new List<Claim>
+      {
+         new Claim(ClaimTypes.Name, Model.UserName)
+      };
 
-		var accountPolicies = await context.Result.Policies.Where(x => x.UserId == userAccount.UserId && x.IsEnabled).ToListAsync();
-		foreach (var policy in accountPolicies)
-		{
-			Claims.Add(new Claim(policy.Policy, "true"));
-		}
+      var accountPolicies = await context.Result.Policies.Where(x => x.UserId == userAccount.UserId && x.IsEnabled).ToListAsync();
+      foreach (var policy in accountPolicies)
+      {
+         Claims.Add(new Claim(policy.Policy, "true"));
+      }
 
-		var identity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
-		var principal = new ClaimsPrincipal(identity);
-		await HttpContext?.SignInAsync(principal);
-		NavigationManager.NavigateTo("/");
-	}
+      var identity = new ClaimsIdentity(Claims, CookieAuthenticationDefaults.AuthenticationScheme);
+      var principal = new ClaimsPrincipal(identity);
+      await HttpContext?.SignInAsync(principal);
+      NavigationManager.NavigateTo("/");
+   }
 
-	private string GenerateMD5Hash(string password)
-	{
-		if (!string.IsNullOrEmpty(password))
-		{
-			// Create an MD5 instance and compute the hash
-			using (MD5 md5 = MD5.Create())
-			{
-				byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-				byte[] hashBytes = md5.ComputeHash(inputBytes);
-				return Convert.ToHexString(hashBytes);
-			}
-		}
-		return String.Empty;
-	}
+   private string GenerateMD5Hash(string password)
+   {
+      if (!string.IsNullOrEmpty(password))
+      {
+         // Create an MD5 instance and compute the hash
+         using (MD5 md5 = MD5.Create())
+         {
+            byte[] inputBytes = Encoding.ASCII.GetBytes(password);
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            return Convert.ToHexString(hashBytes);
+         }
+      }
+      return String.Empty;
+   }
 }

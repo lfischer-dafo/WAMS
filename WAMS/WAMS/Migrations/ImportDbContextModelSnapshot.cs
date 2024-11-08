@@ -10,8 +10,8 @@ using WAMS.Backend.Data;
 
 namespace WAMS.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ImportDbContext))]
+    partial class ImportDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -207,11 +207,8 @@ namespace WAMS.Migrations
                     b.Property<string>("MailAdress")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Password")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("longtext");
+                    b.Property<byte[]>("Password")
+                        .HasColumnType("longblob");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
