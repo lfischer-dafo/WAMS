@@ -11,12 +11,13 @@ namespace WAMS.Backend.Data
    public static class ImportInteropHelper
    {
 
-      public static Student UserFromStudent()
+      public static List<Student> UserFromStudent()
       {
          using (var context = new ImportDbContext())
          {
             string filePath = "C:\\Users\\leonf\\Downloads\\Dummy_Schuelerdaten.xlsx";
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            List<Student> students = new List<Student>();
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
             {
                using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
@@ -36,10 +37,11 @@ namespace WAMS.Backend.Data
                      }
                      SHA256 SHA256 = SHA256.Create();
                      student.Password = SHA256.ComputeHash(Encoding.ASCII.GetBytes((student.FirstName + "." + student.LastName + "." + student.Class.Name.ToString())));
-                     return student;
+                     students.Add(student);
                   }
                }
             }
+            return students;
 
          }
       }
